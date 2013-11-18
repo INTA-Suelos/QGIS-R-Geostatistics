@@ -1,7 +1,7 @@
 (dp0
 S'ALG_DESC'
 p1
-VPlot of semivariogram cloud
+VPlot of Experimental & cloud semivariogram 
 p2
 sS'ALG_CREATOR'
 p3
@@ -17,7 +17,7 @@ VSelect property to analyse
 p8
 sS'RPLOTS'
 p9
-VGraph of semivariogram cloud 
+VGraph of Cloud & cloud semivariogram  
 p10
 sS'ALG_HELP_CREATOR'
 p11
