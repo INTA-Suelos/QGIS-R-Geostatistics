@@ -1,5 +1,4 @@
 #QGIS-R-Geostatistics
-====================
 
 ##How to install:
 
