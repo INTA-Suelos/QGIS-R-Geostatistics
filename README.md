@@ -1,4 +1,17 @@
-QGIS-R-Geostatistics
+#QGIS-R-Geostatistics
 ====================
 
-bla
+##How to install:
+
+Download scripts (*.rsx) to QGIS - R scripts folder. You can check o change the folder in Processing menu, Options and configuration. Look for Providers - R Scripts - R Scripts folder.
+
+i.e. in linux: /home/username/.qgis2/processing/rscripts
+
+##Como instalar:
+
+Descarga los scripts (*.rsx) a la carpeta de scripts de R en QGIS. Pueden revisar o cambiar la carpeta desde el menu de Procesamientos, en Configuración y opciones. Busca Proveedores - Scripts de R - Carpeta de Scripts
+
+por ejemplo, en linux: /home/username/.qgis2/processing/rscripts
+
+
+
