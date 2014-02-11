@@ -5,10 +5,9 @@
 ##nugget=number 9999
 ##psill=number 80000
 ##range=number 2E5
-##Model=string Exp
+##Sph_or_Exp=string Exp
 ##title=string Semivariogram@QGIS
-##kriging_prediction= output raster
-##kriging_variance= output raster
+##out= output raster
 
 library('gstat')
 library('sp')
@@ -28,12 +27,11 @@ mask<-create_new_data(layer)
 names(layer)[names(layer)==field]="field"
 g = gstat(id = field, formula = field~1, data = layer)
 vg = variogram(g)
-vgm = vgm(nugget=nugget, psill=psill, range=range, model=Model)
+vgm = vgm(nugget=nugget, psill=psill, range=range, model=Sph_or_Exp)
 vgm = fit.variogram(vg, vgm)
 
 >vgm
 >attr(vgm, "SSErr")
 plot(vg, vgm, main = title , plot.numbers = TRUE)
 prediction = krige(field~1, layer, newdata = mask, vgm)
-kriging_prediction = raster(prediction)
-kriging_variance = raster(prediction["var1.var"])
+out = raster(prediction)

@@ -6,11 +6,15 @@ Download scripts (*.rsx) to QGIS - R scripts folder. You can check o change the 
 
 i.e. in linux: /home/username/.qgis2/processing/rscripts
 
+Also you can check:
+http://www.qgis.org/en/docs/user_manual/processing/3rdParty.html#r-creating-r-scripts
+
 ##Como instalar:
 
 Descarga los scripts (*.rsx) a la carpeta de scripts de R en QGIS. Pueden revisar o cambiar la carpeta desde el menu de Procesamientos, en Configuración y opciones. Busca Proveedores - Scripts de R - Carpeta de Scripts
 
 por ejemplo, en linux: /home/username/.qgis2/processing/rscripts
 
-
+Para mas ayuda puedes revisar:
+http://www.qgis.org/en/docs/user_manual/processing/3rdParty.html#r-creating-r-scripts
 
