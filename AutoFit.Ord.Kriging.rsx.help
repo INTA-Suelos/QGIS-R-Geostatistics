@@ -1,0 +1,36 @@
+(dp0
+S'kriging_prediction'
+p1
+Vthe ordinary kriging prediction
+p2
+sS'ALG_DESC'
+p3
+V
+p4
+sS'R_CONSOLE_OUTPUT'
+p5
+g4
+sS'ALG_CREATOR'
+p6
+VMarcos Angelini\u000aGuillermo Olmedo\u000a\u000aINTA - Argentina	
+p7
+sS'layer'
+p8
+Vpoint layer to krige
+p9
+sS'field'
+p10
+Vfield to krige
+p11
+sS'RPLOTS'
+p12
+g4
+sS'ALG_HELP_CREATOR'
+p13
+VMarcos Angelini\u000aGuillermo Olmedo\u000a\u000aINTA - Argentina	
+p14
+sS'kriging_variance'
+p15
+Vthe ordinary kriging prediction variance
+p16
+s.
