@@ -21,7 +21,7 @@ git clone https://github.com/INTA-Suelos/QGIS-R-Geostatistics ~/.qgis2/processin
 And you will get all needed files in the correct place.
 
 If you want to update the scripts to the last version, you can do:
-``
+```
 cd ~/.qgis2/processing/rscripts/
 git pull
 
