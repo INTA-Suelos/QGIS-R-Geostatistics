@@ -26,6 +26,12 @@ return(new_data)
 }
 mask<-create_new_data(layer)
 names(layer)[names(layer)==field]="field"
+
+layer$field <- as.numeric(as.character(layer$field))
+str(layer)
+layer <- remove.duplicates(layer)
+layer <- layer[!is.na(layer$field),]
+
 g = gstat(id = field, formula = field~1, data = layer)
 vg = variogram(g)
 vgm = vgm(nugget=nugget, psill=psill, range=range, model=Model)
