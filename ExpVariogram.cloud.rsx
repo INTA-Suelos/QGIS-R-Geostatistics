@@ -2,6 +2,7 @@
 ##showplots
 ##layer=vector
 ##field=field layer
+##Estimate_range_and_psill_initial_values_from_sample_variogram=boolean True
 ##nugget=number 0
 ##model=selection Exp;Sph;Gau;Mat
 ##range=number 0
@@ -21,14 +22,13 @@ layer <- layer[!is.na(layer$field),]
 
 g <- gstat(id = field, formula = field~1, data = layer)
 vg <- variogram(g)
-# is user doesnt change default values for psill and/or range
-# this script will use NA and then, gstat will estimate psill
-# and range from variogram ..
-if(range==0){range=NA} 
-if(psill==0){psill=NA}
+
+if(Estimate_range_and_psill_initial_values_from_sample_variogram & range==0){range=NA} 
+if(Estimate_range_and_psill_initial_values_from_sample_variogram & psill==0){psill=NA}
+
 vgm <- vgm(nugget=nugget, range=range, psill=psill, model=model2)
 vgm = fit.variogram(vg, vgm)
-
+>Estimate_range_and_psill_initial_values_from_sample_variogram
 >vgm
 #>paste("SSErr:", attr(vgm, "SSErr"))
 plot(vg, vgm, main = title , plot.numbers = TRUE)
