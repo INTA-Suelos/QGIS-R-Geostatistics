@@ -2,10 +2,13 @@
 ##showplots
 ##layer=vector
 ##field=field layer
+##Estimate_range_and_psill_initial_values_from_sample_variogram=boolean True
 ##nugget=number 0
 ##model=selection Exp;Sph;Gau;Mat
 ##range=number 0
 ##psill=number 0
+##Local_kriging=boolean False
+##Number_of_nearest_observations=number 25
 ##kriging_variance= output raster
 ##kriging_prediction= output raster
 
@@ -35,17 +38,16 @@ layer <- layer[!is.na(layer$field),]
 
 g = gstat(id = field, formula = field~1, data = layer)
 vg = variogram(g)
-# is user doesnt change default values for psill and/or range
-# this script will use NA and then, gstat will estimate psill
-# and range from variogram ..
-if(range==0){range=NA} 
-if(psill==0){psill=NA}
+
+if(Estimate_range_and_psill_initial_values_from_sample_variogram & range==0){range=NA} 
+if(Estimate_range_and_psill_initial_values_from_sample_variogram & psill==0){psill=NA}
+
 vgm = vgm(nugget=nugget, psill=psill, range=range, model=model2)
 vgm = fit.variogram(vg, vgm)
-
 >vgm
->attr(vgm, "SSErr")
 plot(vg, vgm, plot.numbers = TRUE)
-prediction = krige(field~1, layer, newdata = mask, vgm)
+if(Local_kriging==FALSE){prediction = krige(field~1, layer, newdata = mask, vgm)}
+if(Local_kriging==TRUE){prediction = krige(field~1, layer, newdata = mask, vgm, nmax=Number_of_nearest_observations)}
+#>paste("SSErr:", attr(vgm, "SSErr"))
 kriging_prediction = raster(prediction)
 kriging_variance = raster(prediction["var1.var"])
