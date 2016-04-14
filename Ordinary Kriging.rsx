@@ -2,17 +2,19 @@
 ##showplots
 ##layer=vector
 ##field=field layer
-##nugget=number 9999
-##psill=number 80000
-##range=number 2E5
-##Model=string Exp
-##title=string Semivariogram@QGIS
+##nugget=number 0
+##model=selection Exp;Sph;Gau;Mat
+##range=number 0
+##psill=number 0
 ##kriging_prediction= output raster
 ##kriging_variance= output raster
 
 library('gstat')
 library('sp')
 library('raster')
+Models<-c("Exp","Sph","Gau","Mat")
+model2<-Models[model+1]
+
 create_new_data <- function (obj)
 {
 convex_hull = chull(coordinates(obj)[, 1], coordinates(obj)[,
@@ -34,12 +36,12 @@ layer <- layer[!is.na(layer$field),]
 
 g = gstat(id = field, formula = field~1, data = layer)
 vg = variogram(g)
-vgm = vgm(nugget=nugget, psill=psill, range=range, model=Model)
+vgm = vgm(nugget=nugget, psill=psill, range=range, model=model2)
 vgm = fit.variogram(vg, vgm)
 
 >vgm
 >attr(vgm, "SSErr")
-plot(vg, vgm, main = title , plot.numbers = TRUE)
+plot(vg, vgm, plot.numbers = TRUE)
 prediction = krige(field~1, layer, newdata = mask, vgm)
 kriging_prediction = raster(prediction)
 kriging_variance = raster(prediction["var1.var"])
