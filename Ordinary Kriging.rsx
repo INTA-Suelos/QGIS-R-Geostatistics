@@ -6,12 +6,11 @@
 ##model=selection Exp;Sph;Gau;Mat
 ##range=number 0
 ##psill=number 0
-##kriging_prediction= output raster
 ##kriging_variance= output raster
+##kriging_prediction= output raster
 
 library('gstat')
 library('sp')
-library('raster')
 Models<-c("Exp","Sph","Gau","Mat")
 model2<-Models[model+1]
 
@@ -36,6 +35,11 @@ layer <- layer[!is.na(layer$field),]
 
 g = gstat(id = field, formula = field~1, data = layer)
 vg = variogram(g)
+# is user doesnt change default values for psill and/or range
+# this script will use NA and then, gstat will estimate psill
+# and range from variogram ..
+if(range==0){range=NA} 
+if(psill==0){psill=NA}
 vgm = vgm(nugget=nugget, psill=psill, range=range, model=model2)
 vgm = fit.variogram(vg, vgm)
 

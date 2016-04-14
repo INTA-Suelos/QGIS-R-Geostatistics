@@ -8,7 +8,6 @@
 
 library('gstat')
 library('sp')
-library('raster')
 create_new_data <- function (obj)
 {
 convex_hull = chull(coordinates(obj)[, 1], coordinates(obj)[,
