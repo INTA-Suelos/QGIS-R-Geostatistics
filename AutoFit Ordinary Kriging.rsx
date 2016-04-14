@@ -35,7 +35,7 @@ vgm <- vgm(nugget=0, range=sqrt(diff(layer@bbox[1,])^2 + diff(layer@bbox[2,])^2)
 vgm = fit.variogram(vg, vgm)
 
 >vgm
->paste("SSErr:", attr(vgm, "SSErr"))
+#>paste("SSErr:", attr(vgm, "SSErr"))
 plot(vg, vgm, main = title , plot.numbers = TRUE)
 prediction = krige(field~1, layer, newdata = mask, vgm)
 kriging_prediction = raster(prediction)
