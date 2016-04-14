@@ -2,7 +2,10 @@
 ##showplots
 ##layer=vector
 ##field=field layer
+##nugget=number 0
 ##model=selection Exp;Sph;Gau;Mat
+##range=number 0
+##psill=number 0
 
 library('sp')
 library('gstat')
@@ -17,7 +20,10 @@ layer <- layer[!is.na(layer$field),]
 
 g <- gstat(id = field, formula = field~1, data = layer)
 vg <- variogram(g)
-vgm <- vgm(nugget=0, range=sqrt(diff(layer@bbox[1,])^2 + diff(layer@bbox[2,])^2)/4, psill=var(layer$field), model="Exp")
+if(range==0){range=NA} # is user doesnt change default values for psill and/or range
+if(psill==0){psill=NA} # this script will use NA and then, gstat will estimate psill
+		       # and range from variogram ..
+vgm <- vgm(nugget=nugget, range=range, psill=psill, model="Exp")
 vgm = fit.variogram(vg, vgm)
 
 >vgm
