@@ -9,8 +9,10 @@
 ##psill=number 0
 ##Local_kriging=boolean False
 ##Number_of_nearest_observations=number 25
+##Show_Sum_of_Square_Errors=boolean False
 ##kriging_variance= output raster
 ##kriging_prediction= output raster
+
 
 library('gstat')
 library('sp')
@@ -48,6 +50,6 @@ vgm = fit.variogram(vg, vgm)
 plot(vg, vgm, plot.numbers = TRUE)
 if(Local_kriging==FALSE){prediction = krige(field~1, layer, newdata = mask, vgm)}
 if(Local_kriging==TRUE){prediction = krige(field~1, layer, newdata = mask, vgm, nmax=Number_of_nearest_observations)}
-#>paste("SSErr:", attr(vgm, "SSErr"))
+>if(Show_Sum_of_Square_Errors==TRUE){paste("SSE:", attr(vgm, "SSErr"))}
 kriging_prediction = raster(prediction)
 kriging_variance = raster(prediction["var1.var"])
