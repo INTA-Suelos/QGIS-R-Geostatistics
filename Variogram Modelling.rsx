@@ -7,6 +7,7 @@
 ##model=selection Exp;Sph;Gau;Mat
 ##range=number 0
 ##psill=number 0
+##Show_Sum_of_Square_Errors=boolean False
 
 library('sp')
 library('gstat')
@@ -28,7 +29,6 @@ if(Estimate_range_and_psill_initial_values_from_sample_variogram & psill==0){psi
 
 vgm <- vgm(nugget=nugget, range=range, psill=psill, model=model2)
 vgm = fit.variogram(vg, vgm)
->Estimate_range_and_psill_initial_values_from_sample_variogram
 >vgm
-#>paste("SSErr:", attr(vgm, "SSErr"))
+>if(Show_Sum_of_Square_Errors==TRUE){paste("SSE:", attr(vgm, "SSErr"))}
 plot(vg, vgm, main = title , plot.numbers = TRUE)
