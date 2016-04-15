@@ -24,8 +24,8 @@ layer <- layer[!is.na(layer$field),]
 g <- gstat(id = field, formula = field~1, data = layer)
 vg <- variogram(g)
 
-if(Estimate_range_and_psill_initial_values_from_sample_variogram & range==0){range=NA} 
-if(Estimate_range_and_psill_initial_values_from_sample_variogram & psill==0){psill=NA}
+if(Estimate_range_and_psill_initial_values_from_sample_variogram){range=NA} 
+if(Estimate_range_and_psill_initial_values_from_sample_variogram){psill=NA}
 
 vgm <- vgm(nugget=nugget, range=range, psill=psill, model=model2)
 vgm = fit.variogram(vg, vgm)
