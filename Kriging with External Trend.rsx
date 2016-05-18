@@ -2,6 +2,7 @@
 ##showplots
 ##layer=vector
 ##field=field layer
+##covariate=raster
 ##Estimate_range_and_psill_initial_values_from_sample_variogram=boolean True
 ##nugget=number 0
 ##model=selection Exp;Sph;Gau;Mat
@@ -69,18 +70,27 @@ str(layer)
 layer <- remove.duplicates(layer)
 layer <- layer[!is.na(layer$field),]
 
-g = gstat(id = field, formula = field~1, data = layer)
-vg = variogram(g)
+layer@data <- cbind(layer@data, extract(covariate, layer))
+
+model <- lm(field ~ covariate, data=layer@data)
+>summary(model)
+
+trend <- as.formula(model$call)
+
+dependend_var.v <- variogram(trend, layer)
+plot(dependend_var.v)
 
 if(Estimate_range_and_psill_initial_values_from_sample_variogram){range=NA}
 if(Estimate_range_and_psill_initial_values_from_sample_variogram){psill=NA}
 
 vgm = vgm(nugget=nugget, psill=psill, range=range, model=model2)
-vgm = fit.variogram(vg, vgm)
+vgm = fit.variogram(dependend_var.v, vgm)
 >vgm
-plot(vg, vgm, plot.numbers = TRUE)
-if(Local_kriging==FALSE){prediction = krige(field~1, layer, newdata = mask, vgm)}
-if(Local_kriging==TRUE){prediction = krige(field~1, layer, newdata = mask, vgm, nmax=Number_of_nearest_observations)}
+plot(dependend_var.v, vgm, plot.numbers = TRUE)
+
+
+if(Local_kriging==FALSE){prediction = krige(trend, layer, newdata = mask, vgm)}
+if(Local_kriging==TRUE){prediction = krige(trend, layer, newdata = mask, vgm, nmax=Number_of_nearest_observations)}
 >if(Show_Sum_of_Square_Errors==TRUE){paste("SSE:", attr(vgm, "SSErr"))}
 >if(!is.projected(layer)){warning(paste0("'layer' isn't projected.\n", "Resolution was not used. Interpolation was done over 5000 cells"))}
 >if(is.projected(layer) & Resolution == 0){warning("Resolution was set to 0. Final resolution estimated from data")}

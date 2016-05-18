@@ -38,7 +38,9 @@ plot(vg, vgm, plot.numbers = TRUE)
 if(Local_kriging==FALSE){prediction = krige.cv(field~1, layer, vgm)}
 if(Local_kriging==TRUE){prediction = krige.cv(field~1, layer, vgm, nmax=Number_of_nearest_observations)}
 
-RMSE <- sqrt(mean(OKC.oklog.cross$residual^2, na.rm=TRUE))
+Cross_validation <- as.data.frame(prediction@data)
+
+RMSE <- sqrt(mean(prediction$residual^2, na.rm=TRUE))
 >print(RMSE)
-Cross_validation <- prediction
+
 
