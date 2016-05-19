@@ -26,41 +26,7 @@ model2<-Models[model+1]
 # coordinates(layer) <- ~ Long + Lat
 # plot(layer)
 
-create_new_data_ch <- function (layer)
-{
-  convex_hull = chull(coordinates(layer)[, 1], coordinates(layer)[,2])
-  convex_hull = c(convex_hull, convex_hull[1])
-  d = Polygon(layer[convex_hull, ])
-  if(!is.projected(layer) | Resolution== 0){new_data = spsample(d, 5000, 
-                                                              type = "regular")}
-  if(is.projected(layer)  & Resolution!= 0){
-    new_data = spsample(d, n= 1, cellsize=c(Resolution,Resolution),
-                      type="regular")}
-  gridded(new_data) = TRUE
-  attr(new_data, "proj4string") <-layer@proj4string
-  return(new_data)
-}
-
-create_new_data_ext <- function (layer){ 
-  bottomright <- c(layer@bbox[1], layer@bbox[2])
-  topleft <- c(layer@bbox[3], layer@bbox[4])
-  d <- SpatialPolygons(
-    list(Polygons(list(Polygon(coords = matrix(
-      c(topleft[1],bottomright[1], bottomright[1],topleft[1],topleft[1],
-        topleft[2], topleft[2], bottomright[2], 
-        bottomright[2],topleft[2]), ncol=2, nrow= 5))), ID=1)))
-  if(!is.projected(layer) | Resolution== 0){new_data = spsample(d, 5000, 
-                                                              type = "regular")}
-  if(is.projected(layer) & Resolution != 0){
-    new_data = spsample(d, n= 1, cellsize=c(Resolution,Resolution),
-                        type="regular")}
-  gridded(new_data) = TRUE
-  attr(new_data, "proj4string") <-layer@proj4string
-  return(new_data)
-}
-
-if(Extent==0){mask<-create_new_data_ch(layer)}
-if(Extent==1){mask<-create_new_data_ext(layer)}
+mask <- as(covariate, "SpatialGridDataFrame")
 
 field <- make.names(field)
 names(layer)[names(layer)==field]="field"
@@ -70,9 +36,12 @@ str(layer)
 layer <- remove.duplicates(layer)
 layer <- layer[!is.na(layer$field),]
 
-layer@data <- cbind(layer@data, extract(covariate, layer))
+names(covariate) <- "covariate"
 
-model <- lm(field ~ covariate, data=layer@data)
+layer@data <- cbind(layer@data, extract(covariate, layer))
+summary(layer@data)
+str(layer)
+model <- lm(layer$field ~ layer$covariate, data=layer@data)
 >summary(model)
 
 trend <- as.formula(model$call)
