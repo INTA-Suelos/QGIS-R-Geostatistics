@@ -35,10 +35,12 @@ vgm = vgm(nugget=nugget, psill=psill, range=range, model=model2)
 vgm = fit.variogram(vg, vgm)
 >vgm
 plot(vg, vgm, plot.numbers = TRUE)
+if(nrow(layer)>100){folds = 10}
+>if(nrow(layer)>100){print("Too many points, using 10-folds XVal")}
 if(Local_kriging==FALSE){prediction = krige.cv(field~1, layer, vgm)}
 if(Local_kriging==TRUE){prediction = krige.cv(field~1, layer, vgm, nmax=Number_of_nearest_observations)}
 
-Cross_validation <- as.data.frame(prediction@data)
+#Cross_validation <- as.data.frame(prediction@data)
 
 RMSE <- sqrt(mean(prediction$residual^2, na.rm=TRUE))
 >print(RMSE)
