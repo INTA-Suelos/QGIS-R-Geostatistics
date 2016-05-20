@@ -65,6 +65,7 @@ if(Local_kriging==TRUE){prediction = krige(trend, layer, newdata = mask, vgm, nm
 >if(Show_Sum_of_Square_Errors==TRUE){paste("SSE:", attr(vgm, "SSErr"))}
 >if(!is.projected(layer)){warning(paste0("'layer' isn't projected.\n", "Resolution was not used. Interpolation was done over 5000 cells"))}
 >if(is.projected(layer) & Resolution == 0){warning("Resolution was set to 0. Final resolution estimated from data")}
+>print(paste("R2=", round(summary(model)$r.squared,4)))
 values(covariate)[!is.na(values(covariate))]  = 1
 kriging_prediction = raster(prediction)*covariate
 kriging_variance = raster(prediction["var1.var"])*covariate
