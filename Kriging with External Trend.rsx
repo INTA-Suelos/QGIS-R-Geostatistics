@@ -38,11 +38,12 @@ layer <- layer[!is.na(layer$field),]
 
 names(covariate) <- "covariate"
 
-layer@data <- cbind(layer@data, extract(covariate, layer))
+layer@data <- cbind(layer@data, covariate=extract(covariate, layer))
 summary(layer@data)
 str(layer)
-model <- lm(layer$field ~ layer$covariate, data=layer@data)
->summary(model)
+layer <- spTransform(layer, covariate@crs)
+model <- lm(field ~ covariate, data=layer@data)
+#>summary(model)
 
 trend <- as.formula(model$call)
 
@@ -57,12 +58,13 @@ vgm = fit.variogram(dependend_var.v, vgm)
 >vgm
 plot(dependend_var.v, vgm, plot.numbers = TRUE)
 
-
+mask@data[is.na(mask@data)] <- 0
+names(mask) <- "covariate"
 if(Local_kriging==FALSE){prediction = krige(trend, layer, newdata = mask, vgm)}
 if(Local_kriging==TRUE){prediction = krige(trend, layer, newdata = mask, vgm, nmax=Number_of_nearest_observations)}
 >if(Show_Sum_of_Square_Errors==TRUE){paste("SSE:", attr(vgm, "SSErr"))}
 >if(!is.projected(layer)){warning(paste0("'layer' isn't projected.\n", "Resolution was not used. Interpolation was done over 5000 cells"))}
 >if(is.projected(layer) & Resolution == 0){warning("Resolution was set to 0. Final resolution estimated from data")}
-
-kriging_prediction = raster(prediction)
-kriging_variance = raster(prediction["var1.var"])
+values(covariate)[!is.na(values(covariate))]  = 1
+kriging_prediction = raster(prediction)*covariate
+kriging_variance = raster(prediction["var1.var"])*covariate
